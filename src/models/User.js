@@ -6,7 +6,10 @@ class User {
     this.id = null;
     this.name = null;
     this.username = null;
+    this.password = null;
     this.token = null;
+    this.creationdate = null;
+    this.birthday = null;
     this.status = null;
     Object.assign(this, data);
   }
