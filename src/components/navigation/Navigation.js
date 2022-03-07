@@ -1,97 +1,65 @@
-// import { Link } from "react-router-dom";
-import { FaBars } from "react-icons/fa";
-import { NavLink as Link } from "react-router-dom";
-import styled from "styled-components";
-// import SignedInLinks from "./SignedInLinks";
-// import SignedOutLinks from "./SignedOutLinks";
-
-/**
- * This is a navigation bar, that appears on all sites
- */
-
-// export const Navigation = props => {
-//   if (!localStorage.getItem("token")) {
-//     return props.children;
-//   }
-//   changeState = () => {
-//     this.setState({
-//       token: localStorage.getItem("token")
-//     })
-//   };
-//
-//   return (
-//     <div>
-//       <nav className="nav-wrapper blue darken-3">
-//         <div className="container">
-//           <Link to="/" className="brand-logo"><i class="large material-icons">code</i>Armin Project</Link>
-//           {/* This displays the right Links we either have a token or dont have one-> If we log out we do not have a token anymore */}
-//           {this.state.token == null ? <SignedOutLinks /> : <SignedInLinks />}
-//         </div>
-//       </nav>
-//     </div>
-//   )
-// }
-// export default Navigation;
+import { FaBars } from 'react-icons/fa';
+import { NavLink as Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 const Navigation = () => {
-    return (
-        <>
-            <Nav>
-                <NavLogo to="/">
-                    Logo
-                </NavLogo>
-                <Bars />
-
-                <NavMenu>
-                    <NavLink
-                        to="/"
-                        activeStyle={{ color: 'black' }}
-                    >
-                        Home
-                    </NavLink>
-                    <NavLink
-                        to="/login"
-                        activeStyle={{ color: 'black' }}
-                    >
-                        Sign In
-                    </NavLink>
-                    <NavBtn>
-                        <NavBtnLink to="/registration">Sign Up</NavBtnLink>
-                    </NavBtn>
-                </NavMenu>
-            </Nav>
-        </>
-    );
+  const id = localStorage.getItem('id')
+  const url = "/profile/"
+  const profId = url.concat(id)
+  return (
+    <>
+      <Nav>
+        <NavLogo to='/'>Logo</NavLogo>
+        <Bars />
+        <NavMenu>
+          <NavLink to='/' activeStyle={{ color: 'white' }}>
+            Home
+          </NavLink>
+          <NavLink to='/login' activeStyle={{ color: 'white' }}>
+            Sign In
+          </NavLink>
+          <NavBtn>
+            <NavBtnLink to='/registration'>Sign Up</NavBtnLink>
+          </NavBtn>
+          <NavLink to={profId} activeStyle={{ color: 'white' }}>
+            Profile
+          </NavLink>
+        </NavMenu>
+      </Nav>
+    </>
+  );
 };
 
+// at some point I should remove styled-components
+// TODO: remove styled-components
+
 export const Nav = styled.nav`
-    background: blue;
-    height: 85px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.2rem calc((100vw - 1000px) / 2);
-    z-index: 12;
+  background: #123597;
+  height: 85px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.2rem calc((100vw - 1000px) / 2);
+  z-index: 12;
 `;
 export const NavLogo = styled(Link)`
   cursor: pointer;
   color: #fff;
   font-size: 2rem;
   text-decoration: none;
-
 `;
 
 export const NavLink = styled(Link)`
-color: #fff;
-display: flex;
-align-items: center;
-text-decoration: none;
-padding: 0 1rem;
-height: 100%;
-cursor: pointer;
-&:hover {
-  color: black;
-}
+  color: #fff;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 0 1rem;
+  height: 100%;
+  cursor: pointer;
+  &:hover {
+    color: black;
+  }
 `;
 
 export const Bars = styled(FaBars)`

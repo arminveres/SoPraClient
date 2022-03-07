@@ -1,0 +1,81 @@
+@import 'styles/theme';
+
+.navigation {
+  &.navBar {
+    /* @include center; */
+    flex-direction: row;
+    background: #123597;
+    height: 85px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.2rem calc((100vw - 1000px) / 2);
+    z-index: 12;
+  }
+  &.bars {
+    display: none;
+    color: #fff;
+    @media screen and (max-width: 768px) {
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+      transform: translate(-100%, 75%);
+      font-size: 1.8rem;
+      cursor: pointer;
+    }
+  }
+  &.navLogo {
+    cursor: pointer;
+    color: #fff;
+    font-size: 2rem;
+    text-decoration: none;
+  }
+  &.navLink {
+    color: #fff;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 0 1rem;
+    height: 100%;
+    cursor: pointer;
+    &:hover {
+      color: black;
+    }
+  }
+  &.navMenu {
+    display: flex;
+    align-items: center;
+    margin-right: -24px;
+
+    @media screen and (max-width: 768px) {
+      display: none;
+    }
+  }
+  &.navButton {
+    display: flex;
+    align-items: center;
+    margin-right: 24px;
+
+    @media screen and (max-width: 768px) {
+      display: none;
+    }
+  }
+  &.navButtonLink {
+    border-radius: 4px;
+    background: transparent;
+    padding: 10px 22px;
+    color: #fff;
+    outline: none;
+    border: 1px solid #fff;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    text-decoration: none;
+    margin-left: 24px;
+    &:hover {
+      transition: all 0.2s ease-in-out;
+      background: #fff;
+      color: #808080;
+    }
+  }
+}

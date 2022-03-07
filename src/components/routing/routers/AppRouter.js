@@ -1,11 +1,13 @@
-import {BrowserRouter, Redirect, Route, Switch} from "react-router-dom";
-import {GameGuard} from "components/routing/routeProtectors/GameGuard";
-import GameRouter from "components/routing/routers/GameRouter";
-import {LoginGuard} from "components/routing/routeProtectors/LoginGuard";
-import Login from "components/views/Login";
-import { RegistrationGuard } from "../routeProtectors/RegistrationGuard";
-import Registration from "../../views/Registration"
-import Navigation from "components/navigation/Navigation";
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import { GameGuard } from 'components/routing/routeProtectors/GameGuard';
+import GameRouter from 'components/routing/routers/GameRouter';
+import { LoginGuard } from 'components/routing/routeProtectors/LoginGuard';
+import Login from 'components/views/Login';
+import { RegistrationGuard } from '../routeProtectors/RegistrationGuard';
+import Registration from '../../views/Registration';
+import Navigation from 'components/navigation/Navigation';
+import { ProfilepageGuard } from '../routeProtectors/ProfilepageGuard';
+import ProfileRouter from './ProfileRouter';
 
 /**
  * Main router of your application.
@@ -19,26 +21,30 @@ import Navigation from "components/navigation/Navigation";
 const AppRouter = () => {
   return (
     <BrowserRouter>
-      <Navigation/>
+      <Navigation />
       <Switch>
-        <Route path="/game">
+        <Route path='/game'>
           <GameGuard>
-            <GameRouter base="/game"/>
+            <GameRouter base='/game' />
           </GameGuard>
         </Route>
-        <Route exact path="/login">
+        <Route path='/login'>
           <LoginGuard>
-            <Login/>
+            <Login />
           </LoginGuard>
         </Route>
-        <Route exact path="/">
-          <Redirect to="/game"/>
+        <Route exact path='/'>
+          <Redirect to='/game' />
         </Route>
-        <Route exact path="/registration">
+        <Route path='/registration'>
           <RegistrationGuard>
-            <Registration/>
+            <Registration />
           </RegistrationGuard>
-          {/* <Redirect to="/game"/> */}
+        </Route>
+        <Route path='/profile'>
+          <ProfilepageGuard>
+            <ProfileRouter base='/profile' />
+          </ProfilepageGuard>
         </Route>
       </Switch>
     </BrowserRouter>
@@ -46,6 +52,6 @@ const AppRouter = () => {
 };
 
 /*
-* Don't forget to export your component!
+ * Don't forget to export your component!
  */
 export default AppRouter;
