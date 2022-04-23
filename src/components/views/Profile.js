@@ -51,7 +51,7 @@ const Profile = (props) => {
         id,
       });
       const response = await api.put('/users/' + id, requestBody);
-      if (response.status == 204) {
+      if (response.status === 204) {
         setIsEditable(false);
       }
       // window.location.reload(false);

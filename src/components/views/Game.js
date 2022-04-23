@@ -20,20 +20,27 @@ const Game = () => {
     const history = useHistory();
     //Websocket Userdata for Invitation
     const [userData, setUserData] = useState({
-        from: localStorage.getItem('username'),
+        from: '',
         connected: false
     });
 
     const Player = ({user}) => (
         <div className='player container'>
-            {/* <div className='player username'>{user.username} </div> */}
-            <button onClick={() => toProfile(user.id)}>{user.username}</button>
-            {/* <div className='secondary-button' onClick={() => toProfile(user.id)}>{user.username}</div> */}
-            <div className='player name'>{user.name}</div>
-            <div className='player id'>id: {user.id}</div>
-            <Button width='60%' onClick={() => sendInvite()}>
+            <button onClick={() => toProfile(user.id)}>
+                {user.username}
+            </button>
+            <Button
+                hidden={user.username === localStorage.getItem("username")}
+                width='60%'
+                onClick={() => sendPrivateInvite(user = {user})}>
                 Invite
             </Button>
+            <div className='player id'>
+                id: {user.id}
+            </div>
+            {/* <div className='player username'>{user.username} </div> */}
+            {/* <div className='secondary-button' onClick={() => toProfile(user.id)}>{user.username}</div> */}
+            {/* <div className='player name'>{user.name}</div> */}
             {/* <Button onClick={() => toProfile(user.id)}>view Profile</Button> */}
         </div>
     );
@@ -66,24 +73,36 @@ const Game = () => {
         stompClient.send("/app/hello", {}, JSON.stringify("hello"));
     };
 
+    const sendPrivateInvite = ({user}) => {
+        stompClient.send("/app/invite", {}, user.username);
+    };
+
     const onInviteReceived = (payload) => {
-        const payloadData = JSON.parse(payload.body);
+        // const payloadData = JSON.parse(payload.body);
         // console.log(payloadData);
         setPopupFlag(true);
     }
+
+    const onInviteReceivedPrivate = (payload) => {
+        const payloadData = payload.body;
+        // console.log(payload);
+        setPopupFlag(true);
+    }
+
 
 //connect user to Websocket for invitation
     const connect = () => {
         const socket = new SockJS(`${getDomain()}/websocket`);
         stompClient = Stomp.over(socket);
-        stompClient.connect({}, onConnected, onError);
+        stompClient.connect(
+            {username: localStorage.getItem("username")},
+            onConnected,
+            onError);
         console.log("just got connected " + userData.from);
     }
 
     const onError = (err) => {
-        const onError = (err) => {
-            console.log(err);
-        }
+        console.log(err);
     }
 
     const onConnected = () => {
@@ -92,7 +111,11 @@ const Game = () => {
             onInviteReceived(payload)
         });
         //stompClient.subscribe('/user/'+userData.username+'/private', onPrivateMessage);
+        stompClient.subscribe('/users/queue/invite/greetings', function (payload) {
+            onInviteReceivedPrivate(payload);
+        });
     }
+
     // the effect hook can be used to react to change in your component.
     // in this case, the effect hook is only run once, the first time the component is mounted
     // this can be achieved by leaving the second argument an empty array.
@@ -122,18 +145,12 @@ const Game = () => {
                 console.log(response);
             } catch (error) {
                 console.error(
-                    `Something went wrong while fetching the users: \n${handleError(
-                        error
-                    )}`
+                    `Something went wrong while fetching the users: \n${handleError(error)}`
                 );
                 console.error('Details:', error);
-                alert(
-                    'Something went wrong while fetching the users! See the console for details.'
-                );
+                alert('Something went wrong while fetching the users! See the console for details.');
             }
-
             connect();
-
         }
 
         fetchData();
