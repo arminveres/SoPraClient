@@ -18,7 +18,6 @@ var stompClient = null;
 const Game = () => {
     // use react-router-dom's hook to access the history
     const history = useHistory();
-    const [isOpen, setIsOpen] = useState(true);
     //Websocket Userdata for Invitation
     const [userData, setUserData] = useState({
         from: localStorage.getItem('username'),
@@ -52,6 +51,16 @@ const Game = () => {
     // a component can have as many state variables as you like.
     // more information can be found under https://reactjs.org/docs/hooks-state.html
     const [users, setUsers] = useState(null);
+    const [popupFlag, setPopupFlag] = useState(null);
+    const [isOpen, setIsOpen] = useState(false);
+
+    const togglePopup = () => {
+        setIsOpen(true);
+    }
+
+    const closePopup = () => {
+        setPopupFlag(false);
+    }
 
     const logout = () => {
         localStorage.removeItem('token');
@@ -65,6 +74,7 @@ const Game = () => {
     const onInviteReceived = (payload) => {
         const payloadData = JSON.parse(payload.body);
         // console.log(payloadData);
+        setPopupFlag(true);
     }
 
 //connect user to Websocket for invitation
@@ -133,21 +143,6 @@ const Game = () => {
     }, []);
 
     let content = <Spinner/>;
-    let popup = null;
-    if (isOpen) {
-        popup = (
-            <Popup
-                content={<>
-                    <b>You have received an Invitation</b>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                        voluptate velit.</p>
-                </>}
-                handleClose={setIsOpen(false)}
-            />
-        )
-    }
 
     if (users) {
         content = (
@@ -160,9 +155,6 @@ const Game = () => {
                 <Button width='100%' onClick={() => logout()}>
                     Logout
                 </Button>
-                <div>
-                    {popup}
-                </div>
             </div>
         );
     }
@@ -171,6 +163,14 @@ const Game = () => {
         <BaseContainer className='game container'>
             <h2>Happy Coding!</h2>
             <p className='game paragraph'>Get all users from secure endpoint:</p>
+            <div>
+                {popupFlag && <Popup
+                    content={<>
+                        <b>You have received an Invitation</b>
+                    </>}
+                    handleClose={closePopup}
+                />}
+            </div>
             {content}
         </BaseContainer>
     );
