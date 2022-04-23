@@ -52,11 +52,6 @@ const Game = () => {
     // more information can be found under https://reactjs.org/docs/hooks-state.html
     const [users, setUsers] = useState(null);
     const [popupFlag, setPopupFlag] = useState(null);
-    const [isOpen, setIsOpen] = useState(false);
-
-    const togglePopup = () => {
-        setIsOpen(true);
-    }
 
     const closePopup = () => {
         setPopupFlag(false);
@@ -93,7 +88,9 @@ const Game = () => {
 
     const onConnected = () => {
         setUserData({...userData, "connected": true});
-        stompClient.subscribe('/topic/greetings', function (payload) { onInviteReceived(payload) });
+        stompClient.subscribe('/topic/greetings', function (payload) {
+            onInviteReceived(payload)
+        });
         //stompClient.subscribe('/user/'+userData.username+'/private', onPrivateMessage);
     }
     // the effect hook can be used to react to change in your component.
